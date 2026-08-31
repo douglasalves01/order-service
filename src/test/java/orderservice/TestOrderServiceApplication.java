@@ -1,4 +1,4 @@
-package order_service;
+package orderservice;
 
 import org.springframework.boot.SpringApplication;
 
