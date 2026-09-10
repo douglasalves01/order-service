@@ -34,6 +34,24 @@ public class Order {
     }
 
     public Order(UUID productId, Integer quantity, BigDecimal totalAmount) {
+        if (productId == null) {
+            throw new IllegalArgumentException(
+                    "Product ID cannot be null"
+            );
+        }
+
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "Quantity must be greater than zero"
+            );
+        }
+
+        if (totalAmount == null || totalAmount.signum() <= 0) {
+            throw new IllegalArgumentException(
+                    "Total amount must be greater than zero"
+            );
+        }
+
         this.id = UUID.randomUUID();
         this.productId = productId;
         this.quantity = quantity;
@@ -41,6 +59,7 @@ public class Order {
         this.orderStatus = OrderStatus.PENDING;
         this.createdAt = Instant.now();
     }
+
     public UUID getId() {
         return id;
     }
