@@ -1,3 +1,32 @@
 spring:
   application:
     name: inventory-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/inventory
+    username: saga
+    password: saga
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: inventory-service
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+      properties:
+        "[spring.json.value.default.type]": inventory_service.event.OrderCreatedEvent
+        "[spring.json.use.type.headers]": false
+        "[spring.json.trusted.packages]": inventory_service.event
+
+server:
+  port: 8081
