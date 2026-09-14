@@ -27,6 +27,9 @@ spring:
         "[spring.json.value.default.type]": inventory_service.event.OrderCreatedEvent
         "[spring.json.use.type.headers]": false
         "[spring.json.trusted.packages]": inventory_service.event
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
 server:
   port: 8081
