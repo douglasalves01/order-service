@@ -39,4 +39,28 @@ public class OrderService {
         orderEventPublisher.publish(event);
         return savedOrder;
     }
+
+    @Transactional
+    public void confirmOrder(UUID orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new IllegalStateException(
+                                "Order not found: " + orderId
+                        )
+                );
+
+        order.confirm();
+    }
+
+    @Transactional
+    public void cancelOrder(UUID orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new IllegalStateException(
+                                "Order not found: " + orderId
+                        )
+                );
+
+        order.cancel();
+    }
 }

@@ -60,6 +60,27 @@ public class Order {
         this.createdAt = Instant.now();
     }
 
+    public void confirm() {
+        if (orderStatus == OrderStatus.CONFIRMED) {
+            return;
+        }
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new IllegalStateException("Only pending orders can be confirmed");
+        }
+        this.orderStatus = OrderStatus.CONFIRMED;
+    }
+
+    public void cancel() {
+        if (orderStatus == OrderStatus.CANCELLED) {
+            return;
+        }
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new IllegalStateException("Only pending orders can be cancelled");
+        }
+        this.orderStatus = OrderStatus.CANCELLED;
+    }
+
+
     public UUID getId() {
         return id;
     }
