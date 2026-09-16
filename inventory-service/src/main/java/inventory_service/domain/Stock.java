@@ -15,30 +15,40 @@ public class Stock {
     private UUID productId;
 
     @Column(nullable = false)
-    private Integer AvailableQuantity;
+    private Integer availableQuantity;
 
     protected Stock() {
     }
 
-    public Stock(UUID productId, Integer AvailableQuantity) {
+    public Stock(UUID productId, Integer availableQuantity) {
         if (productId == null) {
             throw new IllegalArgumentException("Product ID cannot be null");
         }
-        if (AvailableQuantity == null) {
+        if (availableQuantity == null) {
             throw new IllegalArgumentException("Available quantity cannot be null");
         }
         this.productId = productId;
-        this.AvailableQuantity = AvailableQuantity;
+        this.availableQuantity = availableQuantity;
     }
 
     public void reserve(Integer quantity) {
         if (quantity == null || quantity <= 0) {
             throw new IllegalArgumentException("Quantity to reserve must be a positive number");
         }
-        if (AvailableQuantity < quantity) {
-            throw new InsufficientStockException(AvailableQuantity, quantity);
+        if (availableQuantity < quantity) {
+            throw new InsufficientStockException(availableQuantity, quantity);
         }
-        this.AvailableQuantity -= quantity;
+        this.availableQuantity -= quantity;
+    }
+
+    public void release(Integer quantity) {
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "quantity must be greater than zero"
+            );
+        }
+
+        this.availableQuantity += quantity;
     }
 
     public UUID getProductId() {
@@ -46,6 +56,6 @@ public class Stock {
     }
 
     public Integer getAvailableQuantity() {
-        return AvailableQuantity;
+        return availableQuantity;
     }
 }

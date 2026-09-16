@@ -24,4 +24,16 @@ public class InventoryService {
         stock.reserve(quantity);
 
     }
+    @Transactional
+    public void releaseStock(
+            UUID productId,
+            Integer quantity
+    ) {
+        Stock stock = stockRepository.findById(productId)
+                .orElseThrow(() ->
+                        new StockNotFoundException(productId)
+                );
+
+        stock.release(quantity);
+    }
 }
