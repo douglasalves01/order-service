@@ -64,6 +64,25 @@ services:
     networks:
       - saga-network
 
+  payment-db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PAYMENT_DB_NAME:-payments}
+      POSTGRES_USER: ${PAYMENT_DB_USER:-saga}
+      POSTGRES_PASSWORD: ${PAYMENT_DB_PASSWORD:-saga}
+    ports:
+      - "5434:5432"
+    volumes:
+      - payment-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${PAYMENT_DB_USER:-saga} -d ${PAYMENT_DB_NAME:-payments}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - saga-network
 
   kafka:
     image: apache/kafka:4.1.0
@@ -128,6 +147,9 @@ volumes:
 
   inventory-db-data:
     name: saga-inventory-db-data
+
+  payment-db-data:
+    name: saga-payment-db-data
 
   kafka-data:
     name: saga-kafka-data
